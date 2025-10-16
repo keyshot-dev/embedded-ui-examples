@@ -1,29 +1,23 @@
-import pick from 'lodash/pick';
 import { Asset, setup } from '@contentful/dam-app-base';
 
 const CTA = 'Select asset from Digizuite';
 
 type AssetMessage = {
-  assetId: number;
-  itemId: number;
-  title: string;
-  linkUrl: string;
-  description: string;
-  downloadUrl: string;
-  extension: string;
-  lastModifiedTimeInMs: number;
+    title: string;
+    description: string;
+    assetId: number;
+    assetType: string;
+    selectedQualityId: number;
+    itemId: number;
+    thumb: string;
+    downloadUrl: string;
+    sourceUrl: string;
+    extension: string;
+    lastModifiedTimeInMs: number;
 }
 
-const ASSET_FIELDS = [
-  'title',
-  'description',
-  'extension',
-  'downloadUrl',
-  'asset',
-];
-
 function makeThumbnail(attachment: Asset): [string, string | undefined] {
-  const url = attachment.downloadUrl;
+  const url = attachment.thumb;
   const alt = attachment.title;
 
   return [url, alt];
@@ -97,24 +91,7 @@ async function openDialog(sdk: any, _currentValue: Asset[], config: any) {
     return [];
   }
 
-  // Example result is Array of:
-  //  export interface AssetMessage {
-  //      assetId: number;
-  //		  itemId: number;
-  //		  title: string;
-  //		  linkUrl: string;
-  //		  description: string;
-  //		  downloadUrl: string;
-  //		  extension: string;
-  //		  lastModifiedTimeInMs: number;
-  //	}
-
-  return result.map((asset: any) => extractAsset(asset));
-}
-
-function extractAsset(asset: any) {
-  let res = pick(asset, ASSET_FIELDS);
-  return res;
+  return result;
 }
 
 setup({
